@@ -18,6 +18,8 @@ cd $(cd -P -- "$(dirname -- "$0")" && pwd -P)
 # Check if the script is in the same directory as the Xcode project
 if [[ $(find . -name 'waifu2x-mac.xcodeproj' -d -maxdepth 1) ]]
 then
+  # Reset sudo timestamp (to avoid automatic sudoing in the script)
+  sudo -K
   # Clean the base directory of previous build attempts
   UNTRACKED=$(git clean -dffnx) # dry run
   if [[ ${UNTRACKED} ]]
@@ -124,7 +126,7 @@ then
       "privileges).${RESET}"
     echo "${BOLD}You can read the license at" \
       "${LINE}https://www.apple.com/legal/sla/docs/xcode.pdf${LOFF}${RESET}"
-    sudo sudo xcrun xcodebuild -license accept
+    sudo xcrun xcodebuild -license accept
   fi
 
   # Configuring dependencies for command-line program
