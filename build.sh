@@ -137,11 +137,21 @@ then
   EXITCODE=$?
   if [[ ${EXITCODE} -eq '0' ]] # success
   then # move the build to a more convenient directory
-    mv ./DerivedData/Build/Products/Release ./build
+    mkdir build
+    mv ./DerivedData/Build/Products/Release/waifu2x-mac-app.app \
+      ./build/waifu2x-mac.app
     rm -r ./DerivedData
-    echo "${INFO} Build success.${RESET}"
-    ls -d -n1 build/* # show where the build is
-    exit 0
+    BUILT=$(find build -name 'waifu2x-mac.app' -d -maxdepth 1)
+    if [[ ${BUILT} ]]
+    then
+      echo "${INFO} Build success.${RESET}"
+      echo "${BUILT}" # show where the built macOS app is
+      exit 0
+    else
+      echo "${ERROR} Build failed.${RESET}" >&2
+      git clean -dffx >&2 # delete ALL untracked files and folders
+      exit 1
+    fi
   else
     echo "${ERROR} Build failed.${RESET}" >&2
     git clean -dffx >&2 # delete ALL untracked files and folders
