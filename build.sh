@@ -60,11 +60,8 @@ then
     XCODEAPP=$(find /Applications -name 'Xcode*.app' -d -maxdepth 1 | head -n1)
     if [[ ${XCODEAPP} ]] # Xcode installed but not selected
     then # try to select Xcode
-      if [[ ${ATTEMPT} -eq 1 ]]
-      then
-        echo "${WARNING} Selecting Xcode for command line tools (requires" \
+      echo "${WARNING} Selecting Xcode for command line tools (requires" \
         "admin privileges).${RESET}"
-      fi
       # Set Xcode.app as the active developer directory
       sudo xcrun xcode-select -s ${XCODEAPP}/Contents/Developer 2> /dev/null
       sudo xcrun xcodebuild -license accept 2> /dev/null
@@ -74,10 +71,7 @@ then
       then
         if ! [[ $(type brew 2> /dev/null) ]] # check for Homebrew pkg manager
         then
-          if [[ ${ATTEMPT} -eq 1 ]]
-          then
-            echo "${WARNING} Installing Homebrew.${RESET}"
-          fi
+          echo "${WARNING} Installing Homebrew.${RESET}"
           /usr/bin/ruby -e "$(curl -fsSL \
           https://raw.githubusercontent.com/Homebrew/install/master/install)"
         fi
