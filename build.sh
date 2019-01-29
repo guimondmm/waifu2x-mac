@@ -21,7 +21,7 @@ then
   # Reset sudo timestamp (to avoid automatic sudoing in the script)
   sudo -K
   # Clean the base directory of previous build attempts
-  UNTRACKED=$(git clean -dffnx) # dry run
+  UNTRACKED=$(git clean -dffnx 2> /dev/null) # dry run
   if [[ ${UNTRACKED} ]]
   then
     echo -e "${WARNING} The ${PWD##*/} directory will be cleaned of all" \
